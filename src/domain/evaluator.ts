@@ -12,10 +12,10 @@ function firstOnOrAfter<T extends { occurredAt: IsoUtc }>(events: T[], anchorAt:
     .sort((a, b) => a.occurredAt.localeCompare(b.occurredAt))[0];
 }
 
-// MVP duration support: P<n>D only (days). Expand later.
+// MVP duration support: P<n>D only (days). Expand later (https://docs.digi.com/resources/documentation/digidocs/90001488-13/reference/r_iso_8601_duration_format.htm, https://www.iso.org/iso-8601-date-and-time-format.html).
 function parseDurationMs(isoDuration: string): number {
   const m = /^P(\d+)D$/.exec(isoDuration);
-  if (!m) throw new Error(`Unsupported duration in MVP: ${isoDuration}`);
+  if (!m) throw new Error(`Unsupported duration in MVP: ${isoDuration}. Must be a duration in ISO 8061 format.`);
   const days = Number(m[1]);
   return days * 24 * 60 * 60 * 1000;
 }
